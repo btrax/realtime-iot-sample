@@ -1,0 +1,46 @@
+<html>
+<head>
+  <script src="http://cdn.pubnub.com/pubnub-3.7.1.min.js"></script> 
+  <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script> 
+  <script>
+  $(function(){
+    var publishKey = <PubNubで取得したPublish Key>;
+    var subscribeKey = <PubNubで取得したSubscribe Key>;
+
+    // constant
+    var channel = "smart-led"; // use same channel name
+
+    // pubnub setup
+    var pubnub = PUBNUB.init({                                  
+      publish_key   : publishKey,
+      subscribe_key : subscribeKey
+    });
+
+    // send data 
+    function publish(action) {
+      var value = {'action': action}; // action must be on or off
+      pubnub.publish({                                     
+        channel : channel,
+        message : value,
+        callback: function(message){ 
+          console.log(message);
+        }
+      });
+    }
+
+    //  button event
+    $('#on-button').click(function(){
+      publish('on');
+    });
+
+    $('#off-button').click(function(){
+      publish('off');
+    });
+  });
+  </script>
+</head>
+<body>
+  <button id="on-button">ON</button>
+  <button id="off-button">OFF</button>
+</body>
+</html>
